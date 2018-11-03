@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XFShimmerLayout", "XFShimmerLayout\XFShimmerLayout.csproj", "{E6E71A75-C504-4440-84FE-07CBA7FBD60F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XFShimmerLayout", "XFShimmerLayout\XFShimmerLayout.csproj", "{E6E71A75-C504-4440-84FE-07CBA7FBD60F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{BCEF8D27-B58E-4F5B-B370-96FFFAAFCB71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XFShimmerLayoutSample.Android", "Sample\XFShimmerLayoutSample\XFShimmerLayoutSample.Android\XFShimmerLayoutSample.Android.csproj", "{5E5E9F18-5EE0-4686-8DEB-E33716973742}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XFShimmerLayoutSample", "Sample\XFShimmerLayoutSample\XFShimmerLayoutSample\XFShimmerLayoutSample.csproj", "{BB8529D3-C809-42C7-AEEA-70FDAFF5903D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,23 @@ Global
 		{E6E71A75-C504-4440-84FE-07CBA7FBD60F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6E71A75-C504-4440-84FE-07CBA7FBD60F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6E71A75-C504-4440-84FE-07CBA7FBD60F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E5E9F18-5EE0-4686-8DEB-E33716973742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E5E9F18-5EE0-4686-8DEB-E33716973742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E5E9F18-5EE0-4686-8DEB-E33716973742}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5E5E9F18-5EE0-4686-8DEB-E33716973742}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5E9F18-5EE0-4686-8DEB-E33716973742}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E5E9F18-5EE0-4686-8DEB-E33716973742}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BB8529D3-C809-42C7-AEEA-70FDAFF5903D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB8529D3-C809-42C7-AEEA-70FDAFF5903D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB8529D3-C809-42C7-AEEA-70FDAFF5903D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8529D3-C809-42C7-AEEA-70FDAFF5903D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5E5E9F18-5EE0-4686-8DEB-E33716973742} = {BCEF8D27-B58E-4F5B-B370-96FFFAAFCB71}
+		{BB8529D3-C809-42C7-AEEA-70FDAFF5903D} = {BCEF8D27-B58E-4F5B-B370-96FFFAAFCB71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3C3E6F0C-E192-4BFB-9DAD-D5BDD6FFD454}

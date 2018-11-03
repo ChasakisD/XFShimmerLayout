@@ -15,6 +15,7 @@ namespace XFShimmerLayout.Controls
     /// <summary>
     /// Adding Shimmering Effect to every child Element
     /// </summary>
+    [ContentProperty("PackedView")]
     public class ShimmerLayout : Grid
     {
         #region Bindable Properties
@@ -222,6 +223,7 @@ namespace XFShimmerLayout.Controls
                 _maskCanvasView = new SKExtCanvasView
                 {
                     Opacity = 0,
+                    IsVisible = false,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     HorizontalOptions = LayoutOptions.FillAndExpand
                 };
@@ -234,7 +236,7 @@ namespace XFShimmerLayout.Controls
             UpdateGradient();
             ExtractVisualElements(PackedView);
 
-            StartAnimation().ConfigureAwait(false);
+            Task.Run(async () => await StartAnimation());
         }
 
         /// <summary>
@@ -243,10 +245,14 @@ namespace XFShimmerLayout.Controls
         /// <returns></returns>
         private async Task StartAnimation()
         {
+            CancelAnimation();
+
             /* First Fade the CanvasView to 1 */
-            _maskCanvasView.Opacity = 0;
-            _maskCanvasView.IsVisible = true;
-            _maskCanvasView.FadeTo(1).Start();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _maskCanvasView.Opacity = 0;
+                _maskCanvasView.IsVisible = true;
+            });
 
             var widthPixels = Width * _density;
             var gradientSizePixels = GradientSize * Width * 2 * _density;
@@ -254,37 +260,59 @@ namespace XFShimmerLayout.Controls
             var startValue = -gradientSizePixels;
             var endValue = gradientSizePixels + widthPixels;
 
-            _animationCancellationTokenSource = new CancellationTokenSource();
-
-            /* While no cancel requested, continue the loop */
-            while (!_animationCancellationTokenSource.Token.IsCancellationRequested)
+            var tasks = new []
             {
-                _animationCycleCompletionSource = new TaskCompletionSource<bool>();
-
-                new Animation
+                Task.Run(async () => await _maskCanvasView.FadeTo(1, 250U, Easing.Linear)),
+                Task.Run(async () =>
                 {
-                    { 0, 1, new Animation(t => _maskCanvasView.InvalidateSurface("Width", t), startValue, endValue) }
-                }.Commit(_maskCanvasView, ShimmerAnimation, 16, Duration, Easing.Linear, (v, c) => _animationCycleCompletionSource.SetResult(c));
+                    _animationCancellationTokenSource = new CancellationTokenSource();
 
-                /* Wait for the animation completion callback and start it again */
-                await _animationCycleCompletionSource.Task;
-            }
+                    /* While no cancel requested, continue the loop */
+                    while (!_animationCancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        _animationCycleCompletionSource = new TaskCompletionSource<bool>();
 
-            /* Last but not least, fade the CanvasView to 0 */
-            await _maskCanvasView.FadeTo(0);
-            _maskCanvasView.IsVisible = false;
+                        new Animation
+                        {
+                            {
+                                0, 1,
+                                new Animation(t => _maskCanvasView.InvalidateSurface("Width", t), startValue, endValue)
+                            }
+                        }.Commit(_maskCanvasView, ShimmerAnimation, 16, Duration, Easing.Linear,
+                            (v, c) => _animationCycleCompletionSource.SetResult(c));
+
+                        /* Wait for the animation completion callback and start it again */
+                        await _animationCycleCompletionSource.Task;
+                    }
+                })
+            };
+
+            await Task.WhenAll(tasks);
         }
 
         /// <summary>
         /// Removed the Shimmer Effect from the elements
         /// </summary>
-        private void RemoveShimmer()
+        private void CancelAnimation()
         {
-            if (_maskCanvasView == null) return;
-
             /* Cancel The Animation */
             _animationCancellationTokenSource?.Cancel();
-            _maskCanvasView.AbortAnimation(ShimmerAnimation);
+            _maskCanvasView?.AbortAnimation(ShimmerAnimation);
+        }
+
+        private void RemoveShimmer()
+        {
+            /* Cancel The Animation */
+            CancelAnimation();
+
+            Task.Run(async () =>
+            {
+                if (_maskCanvasView == null) return;
+
+                /* Fade the CanvasView to 0 */
+                await _maskCanvasView.FadeTo(0, 250U, Easing.Linear);
+                Device.BeginInvokeOnMainThread(() => _maskCanvasView.IsVisible = false);
+            });
         }
 
         #endregion
