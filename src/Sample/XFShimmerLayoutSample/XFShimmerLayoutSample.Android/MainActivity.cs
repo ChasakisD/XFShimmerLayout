@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.OS;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using XFShimmerLayoutPCLSample;
 
 namespace XFShimmerLayoutSample.Droid
 {

@@ -15,7 +15,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
@@ -95,9 +94,9 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XFShimmerLayoutSample\XFShimmerLayoutSample.csproj">
-      <Project>{B5D70764-2D58-450C-8A26-3F7F01D61DE6}</Project>
-      <Name>XFShimmerLayoutSample</Name>
+    <ProjectReference Include="..\XFShimmerLayoutPCLSample\XFShimmerLayoutPCLSample.csproj">
+      <Project>{E3929578-BD44-4BD0-98E5-D6DBC86EE83C}</Project>
+      <Name>XFShimmerLayoutPCLSample</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
