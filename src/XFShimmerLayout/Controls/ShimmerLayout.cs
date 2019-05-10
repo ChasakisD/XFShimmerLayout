@@ -163,7 +163,7 @@ namespace XFShimmerLayout.Controls
         {
             base.OnParentSet();
 
-            if (Parent != null) return;
+            if (Parent != null || _maskCanvasView is null) return;
 
             _maskCanvasView.PaintSurface -= OnMaskCanvasPaintSurface;
         }
