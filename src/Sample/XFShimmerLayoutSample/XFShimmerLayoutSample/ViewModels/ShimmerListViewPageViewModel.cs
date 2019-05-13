@@ -5,7 +5,7 @@ using XFShimmerLayoutSample.Models;
 
 namespace XFShimmerLayoutSample.ViewModels
 {
-    public class ShimmerTestPageViewModel : NotifyingObject
+    public class ShimmerListViewPageViewModel: NotifyingObject
     {
         private bool _isBusy;
         public bool IsBusy
@@ -28,7 +28,7 @@ namespace XFShimmerLayoutSample.ViewModels
             set => Set(ref _startAnimationCommand, value);
         }
 
-        public ShimmerTestPageViewModel()
+        public ShimmerListViewPageViewModel()
         {
             StartAnimationCommand = new Command(async () =>
             {
@@ -44,6 +44,8 @@ namespace XFShimmerLayoutSample.ViewModels
 
                 await Task.Delay(5000);
 
+
+                //Load real data here. 
                 IsBusy = false;
             });
         }

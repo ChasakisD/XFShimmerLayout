@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="XFShimmerLayoutSample.Views.ShimmerTestPage"
+    x:Class="XFShimmerLayoutSample.Views.ShimmerListViewPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:XFShimmerLayout.Controls;assembly=XFShimmerLayout"
     xmlns:viewModels="clr-namespace:XFShimmerLayoutSample.ViewModels;assembly=XFShimmerLayoutSample">
+
     <ContentPage.BindingContext>
         <!--  For Test Reasons binding context is set through this way. Better use a DI Container  -->
-        <viewModels:ShimmerTestPageViewModel />
+        <viewModels:ShimmerListViewPageViewModel />
     </ContentPage.BindingContext>
     <Grid x:Name="myGrid">
         <Grid.RowDefinitions>
