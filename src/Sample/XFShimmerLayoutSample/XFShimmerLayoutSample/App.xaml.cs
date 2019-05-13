@@ -13,7 +13,7 @@ namespace XFShimmerLayoutSample
 
             ShimmerLayout.Init(DeviceDisplay.ScreenMetrics.Density);
 
-            MainPage = new Views.ShimmerTestPage();
+            MainPage = new Views.ShimmerListViewPage();
         }
     }
 }

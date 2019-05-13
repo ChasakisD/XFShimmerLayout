@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XFShimmerLayout.Controls;assembly=XFShimmerLayout"
+             xmlns:viewModels="clr-namespace:XFShimmerLayoutSample.ViewModels;assembly=XFShimmerLayoutSample"
+             x:Class="XFShimmerLayoutSample.Views.ShimmerListViewPage">
+
+    <ContentPage.BindingContext>
+        <!--  For Test Reasons binding context is set through this way. Better use a DI Container  -->
+        <viewModels:ShimmerListViewPageViewModel />
+    </ContentPage.BindingContext>
+    <Grid x:Name="myGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ListView ItemsSource="{Binding Things}" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <controls:ShimmerLayout Angle="-45" GradientSize=".2" IsLoading="{Binding BindingContext.IsBusy, Source={x:Reference myGrid}}">
+                            <StackLayout Spacing="16" Padding="24">
+                                <Grid ColumnSpacing="8" RowSpacing="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <BoxView
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0"
+                        BackgroundColor="Brown"
+                        CornerRadius="20"
+                        HeightRequest="40"
+                        VerticalOptions="Center"
+                        WidthRequest="40" />
+
+                                    <BoxView
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        BackgroundColor="Brown"
+                        HeightRequest="20"
+                        HorizontalOptions="Start"
+                        WidthRequest="150" />
+
+                                    <BoxView
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        BackgroundColor="Brown"
+                        HeightRequest="14"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        WidthRequest="50" />
+
+                                    <BoxView
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        BackgroundColor="Brown"
+                        HeightRequest="18"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        WidthRequest="100" />
+                                </Grid>
+
+                                <Grid ColumnSpacing="8" RowSpacing="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <BoxView
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0"
+                        BackgroundColor="Brown"
+                        CornerRadius="20"
+                        HeightRequest="40"
+                        VerticalOptions="Center"
+                        WidthRequest="40" />
+
+                                    <BoxView
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        BackgroundColor="Brown"
+                        HeightRequest="20"
+                        HorizontalOptions="Start"
+                        WidthRequest="150" />
+
+                                    <BoxView
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        BackgroundColor="Brown"
+                        HeightRequest="14"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        WidthRequest="50" />
+
+                                    <BoxView
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        BackgroundColor="Brown"
+                        HeightRequest="18"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        WidthRequest="100" />
+                                </Grid>
+
+                                <Grid ColumnSpacing="8" RowSpacing="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <BoxView
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0"
+                        BackgroundColor="Brown"
+                        CornerRadius="20"
+                        HeightRequest="40"
+                        VerticalOptions="Center"
+                        WidthRequest="40" />
+
+                                    <BoxView
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        BackgroundColor="Brown"
+                        HeightRequest="20"
+                        HorizontalOptions="Start"
+                        WidthRequest="150" />
+
+                                    <BoxView
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        BackgroundColor="Brown"
+                        HeightRequest="14"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        WidthRequest="50" />
+
+                                    <BoxView
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        BackgroundColor="Brown"
+                        HeightRequest="18"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        WidthRequest="100" />
+                                </Grid>
+
+                                <Grid ColumnSpacing="8" RowSpacing="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <BoxView
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0"
+                        BackgroundColor="Brown"
+                        CornerRadius="20"
+                        HeightRequest="40"
+                        VerticalOptions="Center"
+                        WidthRequest="40" />
+
+                                    <BoxView
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        BackgroundColor="Brown"
+                        HeightRequest="20"
+                        HorizontalOptions="Start"
+                        WidthRequest="150" />
+
+                                    <BoxView
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        BackgroundColor="Brown"
+                        HeightRequest="14"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        WidthRequest="50" />
+
+                                    <BoxView
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        BackgroundColor="Brown"
+                        HeightRequest="18"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        WidthRequest="100" />
+                                </Grid>
+                            </StackLayout>
+                        </controls:ShimmerLayout>
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button
+
+            Grid.Row="1"
+            Padding="8"
+            BackgroundColor="DarkCyan"
+            Command="{Binding StartAnimationCommand}"
+            CornerRadius="10"
+            HorizontalOptions="FillAndExpand"
+            Text="Start Animation"
+            TextColor="White" />
+    </Grid>
+</ContentPage>
