@@ -9,8 +9,24 @@ Efficient way to add a shimmering effect to your Xamarin.Forms applications.
 
 # How To Use
 
-ToDo the specifications. For now, check the sample. It's quite easy.
+* Add nuget package Xamarin.Essentials to all projects
+* Add Init method to ```App.cs``` constructor:
+```
+InitializeComponent();
+var density = Xamarin.Essentials.DeviceDisplay.MainDisplayInfo.Density;
+ShimmerLayout.Init(density);
+```
 
+* add reference:
+```xml
+xmlns:controls="clr-namespace:XFShimmerLayout.Controls;assembly=XFShimmerLayout"
+```
+* Paste content inside shimmerLayout:
+```xml
+ <controls:ShimmerLayout Angle="-45" GradientSize=".2" IsLoading="True">
+    <!--Yours awesome view-->
+ </controls:ShimmerLayout>
+```
 # How it works
 
 ## Drawing Process
