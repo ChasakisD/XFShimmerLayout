@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using SkiaSharp;
@@ -108,6 +111,37 @@ namespace XFShimmerLayout.Controls
 
         #endregion
 
+
+        public static  Dictionary<View, CornerRadius> corners = new Dictionary<View, CornerRadius>();
+        #region Attached Properties
+
+        private List<View> CournersVews = new List<View>();
+        public static BindableProperty CornersProperty = BindableProperty
+            .CreateAttached("Corners", typeof(CornerRadius), typeof(ShimmerLayout), default(CornerRadius),
+            propertyChanged: (view, oldValue, newValue) =>
+              {
+                  var v = view as View;
+                  
+                  if (!ShimmerLayout.corners.ContainsKey(v))
+                  {
+                      ShimmerLayout.corners.Add(v, (CornerRadius)newValue);
+                  }
+              }, propertyChanging: (a, b, c) =>{});
+
+
+
+        public static CornerRadius GetCorners(BindableObject view)
+        {
+            return (CornerRadius)view.GetValue(CornersProperty);
+        }
+
+        public static void SetCorners(BindableObject view, CornerRadius cmd)
+        {
+            view.SetValue(CornersProperty, cmd);
+        }
+
+        #endregion
+
         private static double _density;
 
         private bool _isSizeAllocated;
@@ -129,7 +163,7 @@ namespace XFShimmerLayout.Controls
 
             SizeChanged += ElementSizeChanged;
         }
-        
+
         /// <summary>
         /// Initialized the ShimmerLayout by specifying the Device Density
         /// </summary>
@@ -189,10 +223,27 @@ namespace XFShimmerLayout.Controls
 
             Children.Insert(0, newValue);
         }
-        
+
+        public static List<BindableProperty> GetAttachedProperties(Object obj)
+        {
+            List<BindableProperty> attachedProperties = new List<BindableProperty>();
+
+            TypeInfo typeInfo = obj.GetType().GetTypeInfo();
+            foreach (var propInfo in typeInfo.GetMembers())
+            {
+
+                var name = propInfo.Name;
+                Debug.WriteLine(name);
+            }
+
+
+            return attachedProperties;
+        }
+
+
         private void UpdateGradient()
         {
-            _gradientPositions = new []
+            _gradientPositions = new[]
             {
                 0,
                 .5f - GradientSize / 2,
@@ -200,7 +251,7 @@ namespace XFShimmerLayout.Controls
                 1
             };
 
-            _gradientColors = new []
+            _gradientColors = new[]
             {
                 BackgroundGradientColor.ToSKColor(),
                 ForegroundGradientColor.ToSKColor(),
@@ -260,7 +311,7 @@ namespace XFShimmerLayout.Controls
             var startValue = -gradientSizePixels;
             var endValue = gradientSizePixels + widthPixels;
 
-            var tasks = new []
+            var tasks = new[]
             {
                 Task.Run(async () => await _maskCanvasView.FadeTo(1, 250U, Easing.Linear)),
                 Task.Run(async () =>
@@ -328,7 +379,7 @@ namespace XFShimmerLayout.Controls
             _childVisualElements = new List<SKVisualElement>();
 
             if (!(baseElement is Layout<View> baseLayout))
-            {
+            { 
                 _childVisualElements.Add(baseElement.ToSKVisualElement());
                 return;
             }
@@ -356,7 +407,11 @@ namespace XFShimmerLayout.Controls
                 /* Draw every VisualElement in our layout tree to the SKCanvas */
                 foreach (var view in _childVisualElements)
                 {
-                    DrawSKVisualElement(view, args.Surface.Canvas, paint);
+                    var enableCorner = corners.ContainsKey(view.View);
+                    if (enableCorner)
+                        DrawSKVisualElement(view, args.Surface.Canvas, paint, corners[view.View]);
+                    else
+                    DrawSKVisualElement(view, args.Surface.Canvas, paint,0);
                 }
             }
         }
@@ -420,7 +475,8 @@ namespace XFShimmerLayout.Controls
         /// <param name="skVisualElement">The element to be drawn</param>
         /// <param name="canvas">The canvas to draw on</param>
         /// <param name="paint">The paint that will be used to draw</param>
-        private static void DrawSKVisualElement(SKVisualElement skVisualElement, SKCanvas canvas, SKPaint paint)
+        private static void DrawSKVisualElement(SKVisualElement skVisualElement, SKCanvas canvas, SKPaint paint,
+            CornerRadius corner)
         {
             /*
               Get the X and Y, Including Margins and Paddings 
@@ -433,7 +489,10 @@ namespace XFShimmerLayout.Controls
 
             /* Generate Radii from CornerRadius */
             var radii = skVisualElement.CornerRadius.ToRadiiSKPoints(_density);
-
+            if (corner != default(CornerRadius))
+            {
+                radii = corner.ToRadiiSKPoints(_density);
+            }
             /* Using the SKRect constructor, in width and height, we must add the offset X and Y */
             var rectangle = new SKRect(startX, startY, widthPixels + startX, heightPixels + startY);
 

@@ -13,6 +13,7 @@ namespace XFShimmerLayout.Extensions
         {
             var visualElement = new SKVisualElement((float)element.X, (float)element.Y, (float)element.Width, (float)element.Height, element.Margin);
 
+            visualElement.View = element;
             switch (element)
             {
                 case BoxView boxView:
