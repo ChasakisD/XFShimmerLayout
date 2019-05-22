@@ -12,7 +12,7 @@ namespace XFShimmerLayout.Models.SkiaHelpers
         public SKLayout Parent { get; set; }
         public CornerRadius CornerRadius { get; set; }
 
-        public View View { get; set; }
+        public View OriginalView { get; set; }
 
         public SKVisualElement(float x, float y, float width, float height, Thickness margin)
         {

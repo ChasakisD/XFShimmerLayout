@@ -1,12 +1,9 @@
-﻿using System;
+﻿using SkiaSharp;
+using SkiaSharp.Views.Forms;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using SkiaSharp;
-using SkiaSharp.Views.Forms;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using XFShimmerLayout.Extensions;
@@ -109,37 +106,56 @@ namespace XFShimmerLayout.Controls
             set => SetValue(AngleProperty, value);
         }
 
+        public CornerRadius CornerRadiusOverlayDefault
+        {
+            get => (CornerRadius)GetValue(CornerRadiusOverlayDefaultProperty);
+            set => SetValue(CornerRadiusOverlayDefaultProperty, value);
+        }
+
+        public static readonly BindableProperty CornerRadiusOverlayDefaultProperty = BindableProperty.Create(
+            nameof(CornerRadiusOverlayDefault), typeof(CornerRadius), typeof(ShimmerLayout), default(CornerRadius));
+
+
+        public Thickness PaddingOverlayDefault
+        {
+            get => (Thickness)GetValue(PaddingOverlayDefaultProperty);
+            set => SetValue(PaddingOverlayDefaultProperty, value);
+        }
+
+        public static readonly BindableProperty PaddingOverlayDefaultProperty = BindableProperty.Create(
+            nameof(PaddingOverlayDefault), typeof(Thickness), typeof(ShimmerLayout), default(Thickness));
+
+
         #endregion
 
 
-        public static  Dictionary<View, CornerRadius> corners = new Dictionary<View, CornerRadius>();
         #region Attached Properties
 
-        private List<View> CournersVews = new List<View>();
-        public static BindableProperty CornersProperty = BindableProperty
-            .CreateAttached("Corners", typeof(CornerRadius), typeof(ShimmerLayout), default(CornerRadius),
-            propertyChanged: (view, oldValue, newValue) =>
-              {
-                  var v = view as View;
-                  
-                  if (!ShimmerLayout.corners.ContainsKey(v))
-                  {
-                      ShimmerLayout.corners.Add(v, (CornerRadius)newValue);
-                  }
-              }, propertyChanging: (a, b, c) =>{});
+        public static BindableProperty CornerRadiusOverlayProperty = BindableProperty
+            .CreateAttached("CornerRadiusOverlay", typeof(CornerRadius), typeof(ShimmerLayout), default(CornerRadius));
 
-
-
-        public static CornerRadius GetCorners(BindableObject view)
+        public static CornerRadius GetCornerRadiusOverlay(BindableObject view)
         {
-            return (CornerRadius)view.GetValue(CornersProperty);
+            return (CornerRadius)view.GetValue(CornerRadiusOverlayProperty);
         }
 
-        public static void SetCorners(BindableObject view, CornerRadius cmd)
+        public static void SetCornerRadiusOverlay(BindableObject view, CornerRadius value)
         {
-            view.SetValue(CornersProperty, cmd);
+            view.SetValue(CornerRadiusOverlayProperty, value);
         }
 
+        public static BindableProperty PaddingOverlayProperty = BindableProperty
+            .CreateAttached("PaddingOverlay", typeof(Thickness), typeof(ShimmerLayout), default(Thickness));
+
+        public static Thickness GetPaddingOverlay(BindableObject view)
+        {
+            return (Thickness)view.GetValue(PaddingOverlayProperty);
+        }
+
+        public static void SetPaddingOverlay(BindableObject view, Thickness value)
+        {
+            view.SetValue(PaddingOverlayProperty, value);
+        }
         #endregion
 
         private static double _density;
@@ -223,23 +239,6 @@ namespace XFShimmerLayout.Controls
 
             Children.Insert(0, newValue);
         }
-
-        public static List<BindableProperty> GetAttachedProperties(Object obj)
-        {
-            List<BindableProperty> attachedProperties = new List<BindableProperty>();
-
-            TypeInfo typeInfo = obj.GetType().GetTypeInfo();
-            foreach (var propInfo in typeInfo.GetMembers())
-            {
-
-                var name = propInfo.Name;
-                Debug.WriteLine(name);
-            }
-
-
-            return attachedProperties;
-        }
-
 
         private void UpdateGradient()
         {
@@ -379,7 +378,7 @@ namespace XFShimmerLayout.Controls
             _childVisualElements = new List<SKVisualElement>();
 
             if (!(baseElement is Layout<View> baseLayout))
-            { 
+            {
                 _childVisualElements.Add(baseElement.ToSKVisualElement());
                 return;
             }
@@ -405,16 +404,25 @@ namespace XFShimmerLayout.Controls
                 paint.Shader = GetGradientShader();
 
                 /* Draw every VisualElement in our layout tree to the SKCanvas */
-                foreach (var view in _childVisualElements)
+                foreach (var skElement in _childVisualElements)
                 {
-                    var enableCorner = corners.ContainsKey(view.View);
-                    if (enableCorner)
-                        DrawSKVisualElement(view, args.Surface.Canvas, paint, corners[view.View]);
-                    else
-                    DrawSKVisualElement(view, args.Surface.Canvas, paint,0);
+                    //Set cornerRadius and padding for every view
+                    var corner = GetCornerRadiusOverlay(skElement.OriginalView);
+                    var padding = GetPaddingOverlay(skElement.OriginalView);
+
+                    //If not set - set default value
+                    if (corner == 0)
+                        corner = CornerRadiusOverlayDefault;
+
+                    if (padding == 0)
+                        padding = PaddingOverlayDefault;
+
+                    DrawSKVisualElement(skElement, args.Surface.Canvas, paint, corner, padding);
                 }
             }
         }
+
+
 
         /// <summary>
         /// Generates a Gradient Shader for the Canvas with the actual Shimmer
@@ -476,7 +484,7 @@ namespace XFShimmerLayout.Controls
         /// <param name="canvas">The canvas to draw on</param>
         /// <param name="paint">The paint that will be used to draw</param>
         private static void DrawSKVisualElement(SKVisualElement skVisualElement, SKCanvas canvas, SKPaint paint,
-            CornerRadius corner)
+            CornerRadius corner, Thickness padding)
         {
             /*
               Get the X and Y, Including Margins and Paddings 
@@ -494,7 +502,8 @@ namespace XFShimmerLayout.Controls
                 radii = corner.ToRadiiSKPoints(_density);
             }
             /* Using the SKRect constructor, in width and height, we must add the offset X and Y */
-            var rectangle = new SKRect(startX, startY, widthPixels + startX, heightPixels + startY);
+            var rectangle = new SKRect(startX - (float)padding.Left, startY - (float)padding.Top,
+                widthPixels + startX + (float)padding.Right, heightPixels + startY + (float)padding.Bottom);
 
             /* Create the Round Rectangle */
             var roundRectangle = new SKRoundRect();

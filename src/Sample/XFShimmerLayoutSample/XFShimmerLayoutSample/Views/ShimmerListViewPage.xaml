@@ -20,9 +20,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <controls:ShimmerLayout Angle="-45" GradientSize=".2" 
-                                                
-                                                IsLoading="{Binding BindingContext.IsBusy, Source={x:Reference myGrid}}">
+                        <controls:ShimmerLayout Angle="-45" GradientSize=".2"  
+                                                IsLoading="{Binding BindingContext.IsBusy, Source={x:Reference myGrid}}"
+                                                CornerRadiusOverlayDefault="10"
+                                                PaddingOverlayDefault="7,5">
                             <StackLayout Padding="24" Spacing="16">
                                 <Grid ColumnSpacing="8" RowSpacing="4">
                                     <Grid.RowDefinitions>
@@ -36,7 +37,6 @@
                                     </Grid.ColumnDefinitions>
 
                                     <BoxView
-                                        controls:ShimmerLayout.Corners="10"
                                         Grid.Row="0"
                                         Grid.RowSpan="2"
                                         Grid.Column="0"
@@ -47,7 +47,6 @@
                                         WidthRequest="40" />
 
                                     <BoxView
-                                        controls:ShimmerLayout.Corners="30"
                                         Grid.Row="0"
                                         Grid.Column="1"
                                         BackgroundColor="Brown"
@@ -56,8 +55,6 @@
                                         WidthRequest="150" />
 
                                     <BoxView
-                                        
-                                        controls:ShimmerLayout.Corners="50"
                                         Grid.Row="1"
                                         Grid.Column="1"
                                         BackgroundColor="Brown"
@@ -67,8 +64,6 @@
                                         WidthRequest="50" />
 
                                     <BoxView
-                                        
-                                        controls:ShimmerLayout.Corners="10"
                                         Grid.Row="1"
                                         Grid.Column="2"
                                         BackgroundColor="Brown"
