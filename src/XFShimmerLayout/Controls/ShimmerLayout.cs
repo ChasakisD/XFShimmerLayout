@@ -131,8 +131,8 @@ namespace XFShimmerLayout.Controls
 
         #region Attached Properties
 
-        public static BindableProperty CornerRadiusOverlayProperty = BindableProperty
-            .CreateAttached("CornerRadiusOverlay", typeof(CornerRadius), typeof(ShimmerLayout), default(CornerRadius));
+        public static BindableProperty CornerRadiusOverlayProperty = BindableProperty.CreateAttached(
+            "CornerRadiusOverlay", typeof(CornerRadius), typeof(ShimmerLayout), default(CornerRadius));
 
         public static CornerRadius GetCornerRadiusOverlay(BindableObject view)
         {
@@ -144,8 +144,8 @@ namespace XFShimmerLayout.Controls
             view.SetValue(CornerRadiusOverlayProperty, value);
         }
 
-        public static BindableProperty PaddingOverlayProperty = BindableProperty
-            .CreateAttached("PaddingOverlay", typeof(Thickness), typeof(ShimmerLayout), default(Thickness));
+        public static BindableProperty PaddingOverlayProperty = BindableProperty.CreateAttached(
+            "PaddingOverlay", typeof(Thickness), typeof(ShimmerLayout), default(Thickness));
 
         public static Thickness GetPaddingOverlay(BindableObject view)
         {
@@ -411,13 +411,19 @@ namespace XFShimmerLayout.Controls
                     var padding = GetPaddingOverlay(skElement.OriginalView);
 
                     //If not set - set default value
-                    if (corner == 0)
+                    if (corner == default)
                         corner = CornerRadiusOverlayDefault;
 
-                    if (padding == 0)
+                    if (padding == default)
                         padding = PaddingOverlayDefault;
 
-                    DrawSKVisualElement(skElement, args.Surface.Canvas, paint, corner, padding);
+                    //If default and specific not set, use box or frame cornerRadius
+                    if(corner != default || CornerRadiusOverlayDefault != default)
+                        skElement.CornerRadius = corner;
+                    
+                    skElement.Padding = padding;
+
+                    DrawSKVisualElement(skElement, args.Surface.Canvas, paint);
                 }
             }
         }
@@ -483,8 +489,7 @@ namespace XFShimmerLayout.Controls
         /// <param name="skVisualElement">The element to be drawn</param>
         /// <param name="canvas">The canvas to draw on</param>
         /// <param name="paint">The paint that will be used to draw</param>
-        private static void DrawSKVisualElement(SKVisualElement skVisualElement, SKCanvas canvas, SKPaint paint,
-            CornerRadius corner, Thickness padding)
+        private static void DrawSKVisualElement(SKVisualElement skVisualElement, SKCanvas canvas, SKPaint paint)
         {
             /*
               Get the X and Y, Including Margins and Paddings 
@@ -497,10 +502,7 @@ namespace XFShimmerLayout.Controls
 
             /* Generate Radii from CornerRadius */
             var radii = skVisualElement.CornerRadius.ToRadiiSKPoints(_density);
-            if (corner != default(CornerRadius))
-            {
-                radii = corner.ToRadiiSKPoints(_density);
-            }
+            var padding = skVisualElement.Padding;
             /* Using the SKRect constructor, in width and height, we must add the offset X and Y */
             var rectangle = new SKRect(startX - (float)padding.Left, startY - (float)padding.Top,
                 widthPixels + startX + (float)padding.Right, heightPixels + startY + (float)padding.Bottom);
