@@ -8,7 +8,7 @@ namespace XFShimmerLayout.Models.SkiaHelpers
         public Thickness Padding { get; set; }
         public IList<SKVisualElement> Children { get; set; }
 
-        public SKLayout(float x, float y, float width, float height, Thickness margin)
-            : base(x, y, width, height, margin) { }
+        public SKLayout(float x, float y, float width, float height, Thickness margin, View view)
+            : base(x, y, width, height, margin, view) { }
     }
 }

@@ -5,12 +5,27 @@ Efficient way to add a shimmering effect to your Xamarin.Forms applications.
 
 # Documentation
 
-![Alt Text](https://media.giphy.com/media/AgON7bzysYW9UdXpJF/giphy.gif)
 
 # How To Use
 
-ToDo the specifications. For now, check the sample. It's quite easy.
+* Add nuget package Xamarin.Essentials to all projects
+* Add Init method to ```App.cs``` constructor:
+```
+InitializeComponent();
+var density = Xamarin.Essentials.DeviceDisplay.MainDisplayInfo.Density;
+ShimmerLayout.Init(density);
+```
 
+* add reference:
+```xml
+xmlns:controls="clr-namespace:XFShimmerLayout.Controls;assembly=XFShimmerLayout"
+```
+* Paste content inside shimmerLayout:
+```xml
+ <controls:ShimmerLayout Angle="-45" GradientSize=".2" IsLoading="True">
+    <!--Yours awesome view-->
+ </controls:ShimmerLayout>
+```
 # How it works
 
 ## Drawing Process
@@ -32,6 +47,27 @@ The ShimmerLayout will create a Canvas Layer above this StackLayout and will dra
 * The second one as a Rectangle with X = 16, Y = 16 + 8(Spacing of StackLayout) + 20(Height of above view), Width = 200, Height = 20
 
 You can have as deep Visual Tree wants, the shimmer layout will draw a right copy of it.
+
+## Round Corners and Padding
+
+You can set default CornerRadius and padding of overlay for every element,
+```xml
+<controls:ShimmerLayout 
+ CornerRadiusOverlayDefault="10"
+ PaddingOverlayDefault="5" />
+```
+<img src="https://github.com/VasenevEA/XFShimmerLayout/blob/roundCorners/every.png" width="300">
+
+or set for single element using Attached Property
+```xml
+<controls:ShimmerLayout ... >
+<BoxView 
+         controls:ShimmerLayout.PaddingOverlay="7,1"
+         controls:ShimmerLayout.CornerRadiusOverlay="5"
+         ... />
+</controls:ShimmerLayout>
+```
+<img src="https://github.com/VasenevEA/XFShimmerLayout/blob/roundCorners/single.png" width="300">
 
 ## Shader
 

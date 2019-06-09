@@ -11,8 +11,7 @@ namespace XFShimmerLayout.Extensions
     {
         public static SKVisualElement ToSKVisualElement(this View element)
         {
-            var visualElement = new SKVisualElement((float)element.X, (float)element.Y, (float)element.Width, (float)element.Height, element.Margin);
-
+            var visualElement = new SKVisualElement((float)element.X, (float)element.Y, (float)element.Width, (float)element.Height, element.Margin, element);
             switch (element)
             {
                 case BoxView boxView:
@@ -28,7 +27,7 @@ namespace XFShimmerLayout.Extensions
 
         public static SKLayout ToSKLayout(this Layout<View> layout)
         {
-            var layoutView = new SKLayout((float)layout.X, (float)layout.Y, (float)layout.Width, (float)layout.Height, layout.Margin);
+            var layoutView = new SKLayout((float)layout.X, (float)layout.Y, (float)layout.Width, (float)layout.Height, layout.Margin, layout);
 
             var children = new List<SKVisualElement>();
 
